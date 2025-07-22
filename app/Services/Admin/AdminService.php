@@ -7,6 +7,7 @@
     use App\Repositories\Auth\AuthRepository;
     use Exception;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Auth;
 
     class AdminService
     {
@@ -104,10 +105,11 @@
          * 
          * @return [type]
          */
-        public function update($id, Request $request)
+        public function update(Request $request)
         {
             try {
-                    $findAdmin = $this->findAdmin($id); //find admin to update
+                    $user = Auth::user();
+                    $findAdmin = $this->findAdmin($user->id); //find admin to update
                     
                     $userData = $request->only([
                         'email',
@@ -116,7 +118,7 @@
                         'password',
                         'phone',
                     ]);
-                    $this->authRepository->update( $findAdmin->user_id,$userData); //update user data
+                    $this->authRepository->update($findAdmin->user_id,$userData); //update user data
 
                     $adminData = $request->only([
                         'username',

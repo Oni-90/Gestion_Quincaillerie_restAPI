@@ -7,6 +7,7 @@
     use App\Repositories\Auth\AuthRepository;
     use Exception;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Auth;
 
     class ManagerService
     {
@@ -105,10 +106,11 @@
          * 
          * @return [type]
          */
-        public function update($id, Request $request)
+        public function update(Request $request)
         {
             try {
-                    $findManager = $this->findManager($id); //find manager to update
+                    $user = Auth::user();
+                    $findManager = $this->findManager($user->id); //find manager to update
 
                     $userData = $request->only([
                         'email',

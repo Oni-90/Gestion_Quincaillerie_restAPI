@@ -50,7 +50,7 @@
             return response()->json([
                 'token' => $token,
                 'auth' => Auth::user(),
-                'message' => "Token généré pour l'authentification",
+                'message' => "Utilisateur connecté avec succès.",
                 // 'cookie' => $cookie,
             ]);
         }
@@ -69,12 +69,12 @@
                 Auth::logout();
             } catch (Exception $exception) {
                 return response()->json([
-                    'message' => "Vous n'êtes pas authentifié",
+                    'message' => "Une erreur est survenue lors de la déconnexion.",
                     'error' => $exception->getMessage()
                 ],404);
             }
             return response()->json([
-                'message' => "Déconnexion réeussi",
+                'message' => "Déconnexion réeussi.",
                 'success' => true,
             ],200);
         }

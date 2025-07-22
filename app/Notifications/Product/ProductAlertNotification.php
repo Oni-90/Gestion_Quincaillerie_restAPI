@@ -26,9 +26,9 @@
          *
          * @return array<int, string>
          */
-        public function via(object $notifiable): array
+        public function via(object $notifiable)
         {
-            return ['mail','database'];
+            return ['database', 'mail'];
         }
 
         /**
@@ -38,10 +38,12 @@
         {
             return (new MailMessage)
                         ->subject('Le seuil minimal du produit atteint')
-                        ->line('Le produit {$this->product->name} a atteint ou depassé son seuil minimal de quantité en stock.')
-                        ->line('Quantité actuelle : {$this->product->quantity}')
+                        ->line("Le produit **{$this->product->name}** a atteint ou depassé son seuil minimal de quantité en stock.")
+                        ->line("Quantité actuelle : {$this->product->quantity}")
                         ->action('Voir plus', url('/api/products'.$this->product->id))
-                        ->line('Veuillez vérifier et approvisionner le stock si possible.');
+                        ->line("Veuillez vérifier et réapprovisionner le stock si possible,.")
+                        ->line("Merci de votre attention.")
+                        ->salutation('Cordialement,');
         }
 
         /**
@@ -49,13 +51,13 @@
          *
          * @return array<string, mixed>
          */
-        public function toArray(object $notifiable): array
+        public function toDatabase($notifiable)
         {
             return [
                 'product_id' => $this->product->id,
                 'name' => $this->product->name,
-                'quantity' =>$this->product->quantity,
-                // ... $this->data,
+                'quantity' => $this->product->quantity,
+                'message' => 'Le produit "' . $this->product->name . '" est presque épuisé.',
             ];
         }
     }

@@ -10,7 +10,9 @@
     use App\Http\Controllers\Api\V1\RolePermission\RolePermissionController;
     use App\Http\Controllers\Api\V1\Sale\SaleController;
     use App\Http\Controllers\Api\V1\Supplier\SupplierController;
+    use App\Http\Controllers\Api\V1\Notification\NotificationController;
     use Illuminate\Support\Facades\Route;
+
 
     //login route
     Route::controller(AuthController::class)->group(function(){
@@ -27,7 +29,7 @@
      * authentificate routes
      * ----------------------------
      */
-    Route::group(['middleware' => 'auth','prefix' => 'auth'],function($router){
+    Route::group(['middleware' => 'auth','prefix' => 'auth'],function(){
 
         //all routes only admin can manipulate
         Route::middleware(['role:admin'])->group(function(){
@@ -35,7 +37,7 @@
             //routes for manager manipulations
             Route::controller(ManagerController::class)->group(function(){
                 Route::post('managers', 'store');
-                Route::put('managers/{id}', 'update');
+                Route::put('managers', 'update');
                 Route::get('managers/{id}', 'show');
                 Route::get('managers', 'index');
                 Route::delete('managers/{id}', 'destroy');
@@ -44,7 +46,7 @@
             //routes for admin manipulations
             Route::controller(AdminController::class)->group(function(){
                 Route::post('admins', 'store');
-                Route::put('admins/{id}', 'update');
+                Route::put('admins', 'update');
                 Route::get('admins/{id}', 'show');
                 Route::get('admins', 'index');
                 Route::delete('admins/{id}', 'destroy');
@@ -66,18 +68,24 @@
 
         //routes for client manipulations
         Route::controller(ClientController::class)->middleware(['role:admin|client|manager'])->group(function(){
-            Route::put('clients/{id}', 'update');
+            Route::put('clients', 'update');
             Route::get('clients/{id}', 'show');
             Route::get('clients', 'index');
             Route::delete('clients/{id}', 'destroy');
         });
 
-        //routes for categpory manipulations
+        //routes for category manipulations
         Route::controller(CategoryController::class)->middleware(['role:admin|manager'])->group(function(){
             Route::post('categories', 'store');
             Route::put('categories/{id}','update');
             Route::get('categories/{id}', 'show');
             Route::get('categories', 'index');
+        });
+
+        //routes for notification manipulations
+        Route::controller(NotificationController::class)->middleware(['role:admin|manager|client'])->group(function(){
+            Route::get('notifications', 'index');
+            Route::put('notifications/{id}', 'markAsRead');
         });
 
         //routes for product manipulations

@@ -44,9 +44,9 @@
          * 
          * @return [type]
          */
-        public function update($id, UpdateAdminRequest $request)
+        public function update(UpdateAdminRequest $request)
         {
-            return $this->adminService->update($id,$request);
+            return $this->adminService->update($request);
         }
 
         /**

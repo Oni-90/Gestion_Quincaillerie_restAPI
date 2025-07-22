@@ -8,6 +8,8 @@
     use Illuminate\Http\Request;
     use App\Notifications\Product\ProductAlertNotification;
     use App\Repositories\Auth\AuthRepository;
+    use Spatie\Permission\Models\Role;
+    use App\Models\User;
 
     class SaleService
     {
@@ -60,9 +62,12 @@
                     $product->quantity -= $productSale['quantity_sold']; //subtract quantity sold from available quantity
                     $product->save(); //save it
 
+                    $user = User::role(['admin', 'manager'])->get(); //retrieve user with role admin or manager
                     //check alert threshold
                     if($product->quantity <= $product->alert_threshold){
-                        $this->sendProductAlertNotification($product); //call send product alert function
+                        foreach ($user as $user) {
+                            $user->notify(new ProductAlertNotification($product)); //send notification to user
+                        }
                     }
 
                     //attach product to created sale 
@@ -140,10 +145,13 @@
                         $product->quantity -= $productSale['quantity_sold']; //subtract quantity sold from available quantity
                         $product->save(); //save it
 
+                        $user = User::role(['admin', 'manager'])->get(); //retrieve user with role admin or manager
                         //check alert threshold
                         if($product->quantity <= $product->alert_threshold){
-                        $this->sendProductAlertNotification($product); //call to send product alert function
-                    }
+                            foreach ($user as $user) {
+                                $user->notify(new ProductAlertNotification($product)); //send notification to user
+                            }
+                        }
 
                         //attach product to updated sale 
                         $this->saleRepository->attachProductTosale($findSale,$product,[

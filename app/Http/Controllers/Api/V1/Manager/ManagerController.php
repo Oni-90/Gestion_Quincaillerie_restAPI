@@ -44,9 +44,9 @@
          * 
          * @return [type]
          */
-        public function update($id, UpdateMangerRequest $request)
+        public function update(UpdateMangerRequest $request)
         {
-            return $this->managerService->update($id,$request);
+            return $this->managerService->update($request);
         }
 
         /**

@@ -44,9 +44,9 @@
          * 
          * @return [type]
          */
-        public function update($id,UpdateClientRequest $request)
+        public function update(UpdateClientRequest $request)
         {
-            return $this->clientService->update($id,$request);
+            return $this->clientService->update($request);
         }
 
         /**

@@ -49,6 +49,7 @@
             return [
                 'password.regex' => 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.',
                 'password.min' => 'Le mot de passe doit avoir au moins 8 caractères.',
+                'password.required' => 'Le mot de passe est requis',
                 // 'password.confirmed' => 'Les mots de passe ne correspondent pas.',
                 'firstname.required' => 'Le prénom est requis.',
                 'lastname.required' => 'Le  nom est requis.',

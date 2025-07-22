@@ -7,6 +7,7 @@
     use App\Repositories\Auth\AuthRepository;
     use Exception;
     use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Auth;
 
     class ClientService 
     {
@@ -104,10 +105,11 @@
          * 
          * @return [type]
          */
-        public function update($id,Request $request)
+        public function update(Request $request)
         {
             try {
-                    $findClient = $this->findClient($id); //find client to update
+                    $user = Auth::user(); 
+                    $findClient = $this->findClient($user->id); //find client to update
 
                     $userData = $request->only([
                         'email',
